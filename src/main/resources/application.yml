@@ -1,0 +1,65 @@
+server:
+   port: 8082
+
+eureka:
+   instance:
+      hostname: localhost
+
+
+spring:
+  application:
+      name: api-gateway
+  cloud:
+    gateway:
+      routes:
+      - id: RECAST-BO-TABLEAU-STRATEGISER
+        uri: lb://RECAST-BO-TABLEAU-STRATEGISER
+        predicates:
+          - Path=/api/strategizer/**
+ #       filters:
+  #        - name: CircuitBreaker
+   #         args:
+    #         name: RECAST-BO-TABLEAU-MIGRATOR
+     #        fallbackuri: forward:/recastBoTableauMigratorFallback
+        
+      - id: RECAST-BO-TABLEAU-FUNCTION-MAPPING
+        uri: lb://RECAST-BO-TABLEAU-FUNCTION-MAPPING
+        predicates:
+          - Path=/v1.0/**
+      #  filters:
+       #   - name: CircuitBreaker
+        #    args:
+         #    name: RECAST-BO-TABLEAU-FUNCTION-MAPPING
+          #   fallbackuri: forward:/recastBoTableauFunctionMappingFallback
+
+      - id: RECAST-TABLEAU-MIGRATOR
+        uri: lb://RECAST-TABLEAU-MIGRATOR
+        predicates:
+          - Path=/boToTableau/**
+       # filters:
+        #  - name: CircuitBreaker
+         #   args:
+          #   name: RECAST-TABLEAU-MIGRATOR
+           #  fallbackuri: forward:/recastTableauMigratorFallback
+             
+      - id: RECAST-BO-Analyzer
+        uri: lb://RECAST-BO-Analyzer
+        predicates:
+          - Path=/api/**,/api/analyzer/**
+        #filters:
+         # - name: CircuitBreaker
+          #  args:
+           #  name: RECAST-BO-Analyzer
+            # fallbackuri: forward:/recastBOAnalyserFallback
+     
+           
+    
+
+
+
+
+management:
+     endpoints:
+        web:
+          exposure:
+              include: hystrix.stream
