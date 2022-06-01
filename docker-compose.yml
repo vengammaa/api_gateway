@@ -1,0 +1,14 @@
+version: "3"
+volumes:
+ 
+  
+services:
+
+api_gateway-0.0.1-SNAPSHOT:
+    image: api_gateway-0.0.1-SNAPSHOT
+    ports:
+      - "4200:4200"
+    networks:
+      - test-network
+ 
+  
